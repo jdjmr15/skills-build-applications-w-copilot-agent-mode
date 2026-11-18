@@ -1,10 +1,13 @@
+import { useCallback } from 'react';
+import { getJson } from '../api/client.js';
 import { useApiResource } from '../hooks/useApiResource.js';
 
 type LeaderboardEntry = { teamName: string; totalPoints: number; rank: number };
 type LeaderboardResponse = { leaderboard: LeaderboardEntry[] };
 
 export default function Leaderboard() {
-  const resource = useApiResource<LeaderboardResponse>('/api/leaderboard');
+  const loadLeaderboard = useCallback(() => getJson<LeaderboardResponse>('/api/leaderboard'), []);
+  const resource = useApiResource(loadLeaderboard);
 
   return (
     <section>

@@ -1,10 +1,13 @@
+import { useCallback } from 'react';
+import { getJson } from '../api/client.js';
 import { useApiResource } from '../hooks/useApiResource.js';
 
 type Activity = { _id?: string; type: string; minutes: number; points: number };
 type ActivityResponse = { activities: Activity[] };
 
 export default function Activities() {
-  const resource = useApiResource<ActivityResponse>('/api/activities');
+  const loadActivities = useCallback(() => getJson<ActivityResponse>('/api/activities'), []);
+  const resource = useApiResource(loadActivities);
 
   return (
     <section>
